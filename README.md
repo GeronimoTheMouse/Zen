@@ -17,3 +17,6 @@ The ESP is being drawn in an external overlay. That gives the ability of cheatin
 
 ## Why two projects ?
 Zen is made from two projects. The first project, which is located in the "Zen CSGO Hack", is the main project, which contains all the code for the actual hack. The "CSMemLibrary" on the other hand, it's a C++ project that contains all the functions that C# could not call directly without Pinvoke. The reason that it consists of two projects, is that if C# was Pinvoking user32.dll for example, the signature of the Pinvoking could not be obfuscated. This means, that there will be always an easy-to-detect signature in the cheat, no matter what. By having an external library though, both the name of the library and the name of the functions can be changed, making it impossible to create a signature through the Pinvoke.
+
+## Contribution
+Any contribution to the project is encouraged and highly recommended

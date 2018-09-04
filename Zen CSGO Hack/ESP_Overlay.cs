@@ -91,32 +91,34 @@ namespace Zen_CSGO_Hack
                     //If the player is dead, or it's in our team or is dormant, it's not a valid one, so we continue looping
                     if (player.GetHealth() == 0 || player.GetTeam() == localPlayer.GetTeam() || player.IsDormant())
                         continue;
-                     
-                    //We get the screen coordinates for the player's right foot
-                    var rightFoot = player.GetBonePos((int)Utils.PlayerBones.RightFoot);
-                    //We get the screen coordinates for the player's left foot
-                    var leftFoot = player.GetBonePos((int)Utils.PlayerBones.LeftFoot);
-                    //We get the screen coordinates for the player's head
-                    var head = player.GetBonePos((int)Utils.PlayerBones.Head);
 
-                    //Bottom line
-                    _device.DrawLine(new RawVector2(rightFoot.X, rightFoot.Y), new RawVector2(leftFoot.X, leftFoot.Y), _brush, 2f);
+                    //Get player position
+                    var playerPosition = player.GetPosition();
+                    //Get player head position
+                    var head = player.GetBonePos((int) Utils.PlayerBones.Head);
+                    //Get height based on the head positon, and the player position (which is always between the player's foot)
+                    var height = head.Y - playerPosition.Y;
+                    //Divide height by 4 to get the player's width
+                    var width = height / 4;
+
+                    //Bottom Line
+                    _device.DrawLine(new RawVector2(playerPosition.X - width, playerPosition.Y), new RawVector2(playerPosition.X + width, playerPosition.Y), _brush, 2f);
                     //Top line
-                    _device.DrawLine(new RawVector2(rightFoot.X, head.Y), new RawVector2(leftFoot.X, head.Y), _brush, 2f);
+                    _device.DrawLine(new RawVector2(playerPosition.X - width, playerPosition.Y + height), new RawVector2(playerPosition.X + width, playerPosition.Y + height), _brush, 2f);
                     //Right line
-                    _device.DrawLine(new RawVector2(rightFoot.X, rightFoot.Y), new RawVector2(rightFoot.X, head.Y), _brush, 2f);
+                    _device.DrawLine(new RawVector2(playerPosition.X - width, playerPosition.Y), new RawVector2(playerPosition.X - width, playerPosition.Y + height), _brush, 2f);
                     //Left line
-                    _device.DrawLine(new RawVector2(leftFoot.X, leftFoot.Y), new RawVector2(leftFoot.X, head.Y), _brush, 2f);
+                    _device.DrawLine(new RawVector2(playerPosition.X + width, playerPosition.Y), new RawVector2(playerPosition.X + width, playerPosition.Y + height), _brush, 2f);
 
-                    //Health
-                    _device.DrawTextLayout(new RawVector2(rightFoot.X, rightFoot.Y), new TextLayout(_fontFactory, "Health: " + player.GetHealth(), _font, 50, 12), _brush);
-                    //Armor
-                    _device.DrawTextLayout(new RawVector2(rightFoot.X, rightFoot.Y + 30), new TextLayout(_fontFactory, "Armor: " + player.GetArmor(), _font, 50, 12), _brush);
+                    //Draw Health
+                    _device.DrawTextLayout(new RawVector2(playerPosition.X, playerPosition.Y + 10), new TextLayout(_fontFactory, "Health: " + player.GetHealth(), _font, 50, 12), _brush);
+                    //Draw Armor
+                    _device.DrawTextLayout(new RawVector2(playerPosition.X, playerPosition.Y + 40), new TextLayout(_fontFactory, "Armor: " + player.GetArmor(), _font, 50, 12), _brush);
                 }
 
                 _device.EndDraw();
 
-                Thread.Sleep(2);
+                Thread.Sleep(17);
             }
         }
     }

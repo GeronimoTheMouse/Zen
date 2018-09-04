@@ -46,6 +46,25 @@ namespace Zen_CSGO_Hack
             return isDormant != 0;
         }
 
+        public Vector2 GetPosition()
+        {
+            //Create a new vector to save the 2d player coordinates later
+            var player2DPosition = new Vector2();
+
+            //Get X coordinate
+            var x = PinvokeWrapper.ReadAddFloat((IntPtr)BaseAddress + Offsets.m_vecOrigin, Utils.CsgoHandle);
+            //Get Y coordinate
+            var y = PinvokeWrapper.ReadAddFloat((IntPtr)BaseAddress + Offsets.m_vecOrigin + 0x4, Utils.CsgoHandle);
+            //Get Z coordinate
+            var z = PinvokeWrapper.ReadAddFloat((IntPtr)BaseAddress + Offsets.m_vecOrigin + 0x8, Utils.CsgoHandle);
+
+            //Convert the world coordinates to screen coordinates
+            Utils.WorldToScreen(new Vector3(x, y, z), player2DPosition);
+
+            //Return the result
+            return player2DPosition;
+        }
+
         public Vector2 GetBonePos(int boneId)
         {
             //Create a new vector to save the 2d bone coordinates later
